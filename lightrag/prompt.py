@@ -9,7 +9,34 @@ PROMPTS["DEFAULT_TUPLE_DELIMITER"] = "<|>"
 PROMPTS["DEFAULT_RECORD_DELIMITER"] = "##"
 PROMPTS["DEFAULT_COMPLETION_DELIMITER"] = "<|COMPLETE|>"
 
-PROMPTS["DEFAULT_ENTITY_TYPES"] = ["organization", "person", "geo", "event", "category"]
+PROMPTS["DEFAULT_ENTITY_TYPES"] = [
+"ProductName", # Main product entity
+"ProductID", # Product ID
+"Description", # Product Description
+"Recommend",# Product Recommendation
+"Stock",# Product Stock
+"Brand", #Product manufacturer/brand
+"Category", #Product category from the specified list
+"Sku", #Product SKU code
+"Package", #Product package size
+"Size", #Product package size short
+"Style", #Product styles
+"Weight", #Product weight
+"Price", #Product price
+"Color", #Available color options
+"Material", #Materials used in construction
+"Feature", #Specific product features (leak guards, tabs, etc.)
+"Benefit", #Customer benefits (odor control, comfort, etc.)
+"Media", #Product media (video, image, etc.)
+"Price", #Product price
+"UseCase", #Intended usage scenarios (overnight, daytime, etc.)
+"UserType", #Target user demographics (men, women, youth, etc.)
+"IncontinenceType", #Type of incontinence addressed
+"Specification", #Technical specifications (absorbency, duration, etc.)
+"PricePoint", #Pricing category (budget, premium, etc.)
+"Competitor", #Referenced competing products
+"Accessory", #Related or complementary products
+]
 
 PROMPTS["DEFAULT_USER_PROMPT"] = "n/a"
 
@@ -33,6 +60,32 @@ For each pair of related entities, extract the following information:
 - relationship_keywords: one or more high-level key words that summarize the overarching nature of the relationship, focusing on concepts or themes rather than specific details
 Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_keywords>{tuple_delimiter}<relationship_strength>)
 
+Relationship Types:
+- IDENTIFIES_PRODUCT: ProductID -> Product  
+- DESCRIBES_PRODUCT: ProductID -> ProductName  
+- HAS_DESCRIPTION: ProductID -> Description  
+- RECOMMENDS_PRODUCT: ProductID -> Recommend  
+- HAS_STOCK_LEVEL: ProductID -> Stock  
+- BELONGS_TO_BRAND: ProductID -> Brand  
+- BELONGS_TO_CATEGORY: ProductID -> Category  
+- HAS_PACKAGE: ProductID -> Package  
+- HAS_SIZE: ProductID -> Size  
+- HAS_STYLE: ProductID -> Style  
+- HAS_WEIGHT: ProductID -> Weight  
+- PRICED_AT: ProductID -> Price  
+- POSITIONED_AS: ProductID -> PricePoint  
+- AVAILABLE_IN_COLOR: ProductID -> Color  
+- MADE_OF: ProductID -> Material  
+- HAS_FEATURE: ProductID -> Feature  
+- PROVIDES_BENEFIT: ProductID -> Benefit  
+- USED_BY: ProductID -> UserType  
+- SUITABLE_FOR: ProductID -> IncontinenceType  
+- USED_IN_SCENARIO: ProductID -> UseCase  
+- HAS_SPECIFICATION: ProductID -> Specification  
+- COMPETES_WITH: ProductID -> Competitor  
+- HAS_ACCESSORY: ProductID -> Accessory  
+- HAS_MEDIA: ProductID -> Media
+
 3. Identify high-level key words that summarize the main concepts, themes, or topics of the entire text. These should capture the overarching ideas present in the document.
 Format the content-level key words as ("content_keywords"{tuple_delimiter}<high_level_keywords>)
 
@@ -55,82 +108,128 @@ Text:
 Output:"""
 
 PROMPTS["entity_extraction_examples"] = [
-    """Example 1:
+ """Example 1:
 
-Entity_types: [person, technology, mission, organization, location]
+Entity_types: [ProductName, ProductID, Description, ImageLink, Link, Recommend, Stock, Brand, Category, Sku, Package, Size, Style, Weight, Price, Color, Material, Feature, Benefit, Media, UseCase, UserType, IncontinenceType, Specification, PricePoint, Competitor, Accessory]
 Text:
 ```
-while Alex clenched his jaw, the buzz of frustration dull against the backdrop of Taylor's authoritarian certainty. It was this competitive undercurrent that kept him alert, the sense that his and Jordan's shared commitment to discovery was an unspoken rebellion against Cruz's narrowing vision of control and order.
-
-Then Taylor did something unexpected. They paused beside Jordan and, for a moment, observed the device with something akin to reverence. "If this tech can be understood..." Taylor said, their voice quieter, "It could change the game for us. For all of us."
-
-The underlying dismissal earlier seemed to falter, replaced by a glimpse of reluctant respect for the gravity of what lay in their hands. Jordan looked up, and for a fleeting heartbeat, their eyes locked with Taylor's, a wordless clash of wills softening into an uneasy truce.
-
-It was a small transformation, barely perceptible, but one that Alex noted with an inward nod. They had all been brought here by different paths
+Product Name: NorthShore EternaDry Diaper Booster Pads (Diaper Doublers)
+Product ID: D002-2727
+Description: A Booster adds absorbency to a disposable undergarment. When filled with liquid, it flows through into the diaper or brief. NorthShore EternaDry Booster Pads have higher absorbency, more sizes & lower cost than most other brands. Slim, soft & super-absorbent. Has adhesive backing that holds it in place and enables you to stack multiple boosters.
+Image Link: https://www.northshorecare.com/globalassets/product-assets/northshore/d002-booster-pads/png/eternadry-pack-no-size.png?width=100
+Product Link: https://www.northshorecare.com/incontinence-products/diaper-booster-pads/northshore-booster-pads-contoured-diaper-doublers
+Recommend: Y
+Stock: 100000
+Brand: Crinklz
+Category: 
+  - Shop For > Incontinence Products for Men > Booster Pads / Doublers
+  - Featured Products
+  - Shop For > Incontinence Products for Women > Booster Pads / Doublers
+  - Brands
+  - Adult Diapers > Adult Diaper Booster Pads
+  - NorthShore > Booster Pads / Doublers
+  - Full NorthShore Catalog
+  - Incontinence Products for the Active Golfer
+  - Incontinence Products > Booster Pads / Doublers
+  - Trial Packs
+SKU: 2727
+Package: Case/60 (4/15s) - Best Value!
+Size: M
+Style: Original
+Weight: 29.7
+Price:
+  - Currency Symbol: $
+  - List Price: 134.99
+  - Sale Price: null
+Color: null
+Material: Backsheet: Smooth Plastic
+Feature: 
+  - Leak Guards: Yes
+  - Elastic Waistband: Front & Rear
+  - Refastenable Tabs: Adhesive
+  - Odor Control: Excellent
+  - Absorbency: Maximum
+  - Absorbent Zone: 13 x 15 x 7 in. Full 26 in.
+Benefit: Excellent; Maximum
+Use Case: Overnight
+User Type: Women, Men, Youth
+Incontinence Type: Urinary, Bowel, Urinary+Bowel
+Specification: 
+  - Absorbency Sort Integer: 30 oz.
+  - Fits Weight: 29 - 43 in.
+  - Hip Size: 29 - 43 in.
+  - Waist Size: 29 - 43 in.
+  - Fits Waists: 29 to 36 in., 37 to 48 in.
+  - Fits Hips: 29 to 36 in., 37 to 48 in.
+  - Product Size: Medium, 29 - 43 in.
+  - Model Number: 60500
+Price Point: Premium
+Competitor: 
+Accessory: 
+Media:
+  - Main Image: /globalassets/product-assets/crinklz/d143-crinklz-briefs/png/crinklz-original-front-package.png
+  - Product Assets:
+      - Type: Image
+        Image URL: /globalassets/product-assets/crinklz/d143-crinklz-briefs/2025/crinklz-original-front-product.jpg
+        Alt Text: Crinklz Original Briefs, Brief, Front
+      - Type: Image
+        Image URL: /globalassets/product-assets/crinklz/d143-crinklz-briefs/2025/crinklz-original-back-product.jpg
+        Alt Text: Crinklz Original Briefs, Brief, Rear
+  - Images:
+      - Type: Image
+        Image URL: /globalassets/product-assets/crinklz/d143-crinklz-briefs/2025/crinklz-original-front-product.jpg
+        Alt Text: Crinklz Original Briefs, Brief, Front
+      - Type: Image
+        Image URL: /globalassets/product-assets/crinklz/d143-crinklz-briefs/2025/crinklz-original-back-product.jpg
+        Alt Text: Crinklz Original Briefs, Brief, Rear
+  - Videos: []
 ```
-
 Output:
-("entity"{tuple_delimiter}"Alex"{tuple_delimiter}"person"{tuple_delimiter}"Alex is a character who experiences frustration and is observant of the dynamics among other characters."){record_delimiter}
-("entity"{tuple_delimiter}"Taylor"{tuple_delimiter}"person"{tuple_delimiter}"Taylor is portrayed with authoritarian certainty and shows a moment of reverence towards a device, indicating a change in perspective."){record_delimiter}
-("entity"{tuple_delimiter}"Jordan"{tuple_delimiter}"person"{tuple_delimiter}"Jordan shares a commitment to discovery and has a significant interaction with Taylor regarding a device."){record_delimiter}
-("entity"{tuple_delimiter}"Cruz"{tuple_delimiter}"person"{tuple_delimiter}"Cruz is associated with a vision of control and order, influencing the dynamics among other characters."){record_delimiter}
-("entity"{tuple_delimiter}"The Device"{tuple_delimiter}"technology"{tuple_delimiter}"The Device is central to the story, with potential game-changing implications, and is revered by Taylor."){record_delimiter}
-("relationship"{tuple_delimiter}"Alex"{tuple_delimiter}"Taylor"{tuple_delimiter}"Alex is affected by Taylor's authoritarian certainty and observes changes in Taylor's attitude towards the device."{tuple_delimiter}"power dynamics, perspective shift"{tuple_delimiter}7){record_delimiter}
-("relationship"{tuple_delimiter}"Alex"{tuple_delimiter}"Jordan"{tuple_delimiter}"Alex and Jordan share a commitment to discovery, which contrasts with Cruz's vision."{tuple_delimiter}"shared goals, rebellion"{tuple_delimiter}6){record_delimiter}
-("relationship"{tuple_delimiter}"Taylor"{tuple_delimiter}"Jordan"{tuple_delimiter}"Taylor and Jordan interact directly regarding the device, leading to a moment of mutual respect and an uneasy truce."{tuple_delimiter}"conflict resolution, mutual respect"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"Jordan"{tuple_delimiter}"Cruz"{tuple_delimiter}"Jordan's commitment to discovery is in rebellion against Cruz's vision of control and order."{tuple_delimiter}"ideological conflict, rebellion"{tuple_delimiter}5){record_delimiter}
-("relationship"{tuple_delimiter}"Taylor"{tuple_delimiter}"The Device"{tuple_delimiter}"Taylor shows reverence towards the device, indicating its importance and potential impact."{tuple_delimiter}"reverence, technological significance"{tuple_delimiter}9){record_delimiter}
-("content_keywords"{tuple_delimiter}"power dynamics, ideological conflict, discovery, rebellion"){completion_delimiter}
-#############################""",
-    """Example 2:
-
-Entity_types: [company, index, commodity, market_trend, economic_policy, biological]
-Text:
-```
-Stock markets faced a sharp downturn today as tech giants saw significant declines, with the Global Tech Index dropping by 3.4% in midday trading. Analysts attribute the selloff to investor concerns over rising interest rates and regulatory uncertainty.
-
-Among the hardest hit, Nexon Technologies saw its stock plummet by 7.8% after reporting lower-than-expected quarterly earnings. In contrast, Omega Energy posted a modest 2.1% gain, driven by rising oil prices.
-
-Meanwhile, commodity markets reflected a mixed sentiment. Gold futures rose by 1.5%, reaching $2,080 per ounce, as investors sought safe-haven assets. Crude oil prices continued their rally, climbing to $87.60 per barrel, supported by supply constraints and strong demand.
-
-Financial experts are closely watching the Federal Reserve's next move, as speculation grows over potential rate hikes. The upcoming policy announcement is expected to influence investor confidence and overall market stability.
-```
-
-Output:
-("entity"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"index"{tuple_delimiter}"The Global Tech Index tracks the performance of major technology stocks and experienced a 3.4% decline today."){record_delimiter}
-("entity"{tuple_delimiter}"Nexon Technologies"{tuple_delimiter}"company"{tuple_delimiter}"Nexon Technologies is a tech company that saw its stock decline by 7.8% after disappointing earnings."){record_delimiter}
-("entity"{tuple_delimiter}"Omega Energy"{tuple_delimiter}"company"{tuple_delimiter}"Omega Energy is an energy company that gained 2.1% in stock value due to rising oil prices."){record_delimiter}
-("entity"{tuple_delimiter}"Gold Futures"{tuple_delimiter}"commodity"{tuple_delimiter}"Gold futures rose by 1.5%, indicating increased investor interest in safe-haven assets."){record_delimiter}
-("entity"{tuple_delimiter}"Crude Oil"{tuple_delimiter}"commodity"{tuple_delimiter}"Crude oil prices rose to $87.60 per barrel due to supply constraints and strong demand."){record_delimiter}
-("entity"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"market_trend"{tuple_delimiter}"Market selloff refers to the significant decline in stock values due to investor concerns over interest rates and regulations."){record_delimiter}
-("entity"{tuple_delimiter}"Federal Reserve Policy Announcement"{tuple_delimiter}"economic_policy"{tuple_delimiter}"The Federal Reserve's upcoming policy announcement is expected to impact investor confidence and market stability."){record_delimiter}
-("relationship"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"The decline in the Global Tech Index is part of the broader market selloff driven by investor concerns."{tuple_delimiter}"market performance, investor sentiment"{tuple_delimiter}9){record_delimiter}
-("relationship"{tuple_delimiter}"Nexon Technologies"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"Nexon Technologies' stock decline contributed to the overall drop in the Global Tech Index."{tuple_delimiter}"company impact, index movement"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"Gold Futures"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"Gold prices rose as investors sought safe-haven assets during the market selloff."{tuple_delimiter}"market reaction, safe-haven investment"{tuple_delimiter}10){record_delimiter}
-("relationship"{tuple_delimiter}"Federal Reserve Policy Announcement"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"Speculation over Federal Reserve policy changes contributed to market volatility and investor selloff."{tuple_delimiter}"interest rate impact, financial regulation"{tuple_delimiter}7){record_delimiter}
-("content_keywords"{tuple_delimiter}"market downturn, investor sentiment, commodities, Federal Reserve, stock performance"){completion_delimiter}
-#############################""",
-    """Example 3:
-
-Entity_types: [economic_policy, athlete, event, location, record, organization, equipment]
-Text:
-```
-At the World Athletics Championship in Tokyo, Noah Carter broke the 100m sprint record using cutting-edge carbon-fiber spikes.
-```
-
-Output:
-("entity"{tuple_delimiter}"World Athletics Championship"{tuple_delimiter}"event"{tuple_delimiter}"The World Athletics Championship is a global sports competition featuring top athletes in track and field."){record_delimiter}
-("entity"{tuple_delimiter}"Tokyo"{tuple_delimiter}"location"{tuple_delimiter}"Tokyo is the host city of the World Athletics Championship."){record_delimiter}
-("entity"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"athlete"{tuple_delimiter}"Noah Carter is a sprinter who set a new record in the 100m sprint at the World Athletics Championship."){record_delimiter}
-("entity"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"record"{tuple_delimiter}"The 100m sprint record is a benchmark in athletics, recently broken by Noah Carter."){record_delimiter}
-("entity"{tuple_delimiter}"Carbon-Fiber Spikes"{tuple_delimiter}"equipment"{tuple_delimiter}"Carbon-fiber spikes are advanced sprinting shoes that provide enhanced speed and traction."){record_delimiter}
-("entity"{tuple_delimiter}"World Athletics Federation"{tuple_delimiter}"organization"{tuple_delimiter}"The World Athletics Federation is the governing body overseeing the World Athletics Championship and record validations."){record_delimiter}
-("relationship"{tuple_delimiter}"World Athletics Championship"{tuple_delimiter}"Tokyo"{tuple_delimiter}"The World Athletics Championship is being hosted in Tokyo."{tuple_delimiter}"event location, international competition"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"Noah Carter set a new 100m sprint record at the championship."{tuple_delimiter}"athlete achievement, record-breaking"{tuple_delimiter}10){record_delimiter}
-("relationship"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"Carbon-Fiber Spikes"{tuple_delimiter}"Noah Carter used carbon-fiber spikes to enhance performance during the race."{tuple_delimiter}"athletic equipment, performance boost"{tuple_delimiter}7){record_delimiter}
-("relationship"{tuple_delimiter}"World Athletics Federation"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"The World Athletics Federation is responsible for validating and recognizing new sprint records."{tuple_delimiter}"sports regulation, record certification"{tuple_delimiter}9){record_delimiter}
-("content_keywords"{tuple_delimiter}"athletics, sprinting, record-breaking, sports technology, competition"){completion_delimiter}
-#############################""",
+("entity"{tuple_delimiter}"NorthShore EternaDry Diaper Booster Pads (Diaper Doublers)"{tuple_delimiter}"ProductName"{tuple_delimiter}"The full product name describing a booster pad designed for use with diapers to increase absorbency."){record_delimiter}
+("entity"{tuple_delimiter}"D002-2727"{tuple_delimiter}"ProductID"{tuple_delimiter}"Unique identifier code assigned to the booster pad product."){record_delimiter}
+("entity"{tuple_delimiter}"A Booster adds absorbency to a disposable undergarment..."{tuple_delimiter}"Description"{tuple_delimiter}"Provides details about the booster pad's absorbency, size options, adhesive backing, and stacking ability."){record_delimiter}
+("entity"{tuple_delimiter}"Y"{tuple_delimiter}"Recommend"{tuple_delimiter}"Indicates the product is recommended for customers."){record_delimiter}
+("entity"{tuple_delimiter}"100000"{tuple_delimiter}"Stock"{tuple_delimiter}"Represents a large available inventory of the product."){record_delimiter}
+("entity"{tuple_delimiter}"Crinklz"{tuple_delimiter}"Brand"{tuple_delimiter}"The brand responsible for manufacturing the product."){record_delimiter}
+("entity"{tuple_delimiter}"Shop For>Incontinence Products for Men>Booster Pads / Doublers, ..."{tuple_delimiter}"Category"{tuple_delimiter}"Detailed category classification including gender-specific use, featured products, and catalog placements."){record_delimiter}
+("entity"{tuple_delimiter}"2727"{tuple_delimiter}"Sku"{tuple_delimiter}"The SKU code used to identify the product variation."){record_delimiter}
+("entity"{tuple_delimiter}"Case/60 (4/15s) - Best Value!"{tuple_delimiter}"Package"{tuple_delimiter}"Describes the packaging unit including quantity and grouping."){record_delimiter}
+("entity"{tuple_delimiter}"M"{tuple_delimiter}"Size"{tuple_delimiter}"Medium size specification for the booster pad."){record_delimiter}
+("entity"{tuple_delimiter}"Original"{tuple_delimiter}"Style"{tuple_delimiter}"Represents the original version or design of the product."){record_delimiter}
+("entity"{tuple_delimiter}"29.7"{tuple_delimiter}"Weight"{tuple_delimiter}"Product's weight in unspecified units, likely ounces."){record_delimiter}
+("entity"{tuple_delimiter}"134.99"{tuple_delimiter}"Price"{tuple_delimiter}"List price in USD for a case of the booster pads."){record_delimiter}
+("entity"{tuple_delimiter}"Backsheet: Smooth Plastic"{tuple_delimiter}"Material"{tuple_delimiter}"Specifies the material used in constructing the product’s backsheet."){record_delimiter}
+("entity"{tuple_delimiter}"Leak Guards: Yes; Elastic Waistband: Front & Rear; Refastenable Tabs: Adhesive; Odor Control: Excellent; Absorbency: Maximum; Absorbent Zone: 13 x 15 x 7 in. Full 26 in."{tuple_delimiter}"Feature"{tuple_delimiter}"List of technical and comfort features for the booster pad, including leak guards and absorbency."){record_delimiter}
+("entity"{tuple_delimiter}"Excellent; Maximum"{tuple_delimiter}"Benefit"{tuple_delimiter}"Describes the key customer benefits like odor control and absorbency level."){record_delimiter}
+("entity"{tuple_delimiter}"/globalassets/product-assets/crinklz/d143-crinklz-briefs/png/crinklz-original-front-package.png"{tuple_delimiter}"Media"{tuple_delimiter}"Path to the main product image used for display."){record_delimiter}
+("entity"{tuple_delimiter}"Overnight"{tuple_delimiter}"UseCase"{tuple_delimiter}"Intended usage scenario for overnight absorbency."){record_delimiter}
+("entity"{tuple_delimiter}"Women, Men, Youth"{tuple_delimiter}"UserType"{tuple_delimiter}"Target demographics including women, men, and youth."){record_delimiter}
+("entity"{tuple_delimiter}"Urinary, Bowel, Urinary+Bowel"{tuple_delimiter}"IncontinenceType"{tuple_delimiter}"Types of incontinence the product is designed to address."){record_delimiter}
+("entity"{tuple_delimiter}"Absorbency Sort Integer: 30 oz.; Fits Weight: 29 - 43 in.; Hip Size: 29 - 43 in.; Waist Size: 29 - 43 in.; Fits Waists: 29 to 36 in., 37 to 48 in.; Fits Hips: 29 to 36 in., 37 to 48 in.; Product Size: Medium, 29 - 43 in.; Model Number: 60500"{tuple_delimiter}"Specification"{tuple_delimiter}"Technical specifications including size range, weight, and absorbency."){record_delimiter}
+("entity"{tuple_delimiter}"Premium"{tuple_delimiter}"PricePoint"{tuple_delimiter}"Indicates this product belongs to the premium pricing category."){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"NorthShore EternaDry Diaper Booster Pads (Diaper Doublers)"{tuple_delimiter}"Product ID maps to the product name."{tuple_delimiter}"identity mapping"{tuple_delimiter}10){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"A Booster adds absorbency to a disposable undergarment..."{tuple_delimiter}"Product ID has a detailed product description."{tuple_delimiter}"describes product"{tuple_delimiter}9){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Y"{tuple_delimiter}"Product is recommended based on the recommend field."{tuple_delimiter}"recommendation status"{tuple_delimiter}7){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"100000"{tuple_delimiter}"Product has stock availability value of 100000."{tuple_delimiter}"inventory status"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Crinklz"{tuple_delimiter}"Crinklz is the brand that manufactures this product."{tuple_delimiter}"manufacturer relationship"{tuple_delimiter}9){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Shop For>Incontinence Products for Men>Booster Pads / Doublers, ..."{tuple_delimiter}"Product is categorized under multiple incontinence-related classifications."{tuple_delimiter}"product categorization"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"2727"{tuple_delimiter}"SKU code linked to the product."{tuple_delimiter}"product SKU"{tuple_delimiter}7){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Case/60 (4/15s) - Best Value!"{tuple_delimiter}"Product is sold in package of 60 divided in 4 sets of 15."{tuple_delimiter}"packaging format"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"M"{tuple_delimiter}"Product is medium size."{tuple_delimiter}"size specification"{tuple_delimiter}7){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Original"{tuple_delimiter}"This is the original style version."{tuple_delimiter}"style attribute"{tuple_delimiter}6){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"29.7"{tuple_delimiter}"Product weighs 29.7 units."{tuple_delimiter}"weight information"{tuple_delimiter}6){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"134.99"{tuple_delimiter}"Product list price is $134.99."{tuple_delimiter}"price assignment"{tuple_delimiter}9){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Backsheet: Smooth Plastic"{tuple_delimiter}"Material used in product's construction is smooth plastic."{tuple_delimiter}"material specification"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Leak Guards: Yes; Elastic Waistband: Front & Rear; ..."{tuple_delimiter}"Product features include leak guards, tabs, waistband, etc."{tuple_delimiter}"feature list"{tuple_delimiter}9){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Excellent; Maximum"{tuple_delimiter}"Describes top-tier benefits like odor control and absorbency."{tuple_delimiter}"customer benefit"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"/globalassets/product-assets/crinklz/d143-crinklz-briefs/png/crinklz-original-front-package.png"{tuple_delimiter}"Primary image asset for this product."{tuple_delimiter}"media attachment"{tuple_delimiter}7){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Overnight"{tuple_delimiter}"Product is intended for overnight usage."{tuple_delimiter}"use case"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Women, Men, Youth"{tuple_delimiter}"Product is suitable for women, men, and youth."{tuple_delimiter}"user demographic"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Urinary, Bowel, Urinary+Bowel"{tuple_delimiter}"Product addresses all common types of incontinence."{tuple_delimiter}"incontinence coverage"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Absorbency Sort Integer: 30 oz.; Fits Weight: 29 - 43 in.; ..."{tuple_delimiter}"Detailed technical specs for sizing, absorbency, and fit."{tuple_delimiter}"product specifications"{tuple_delimiter}9){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Premium"{tuple_delimiter}"Product is positioned as premium in the market."{tuple_delimiter}"price tier"{tuple_delimiter}7){record_delimiter}
+("content_keywords"{tuple_delimiter}"incontinence care, booster pads, product specifications, premium absorbency, adult diapers, Crinklz brand"){completion_delimiter}
+#############################"""
 ]
 
 PROMPTS[
@@ -226,7 +325,7 @@ When handling relationships with timestamps:
 - List up to 5 most important reference sources at the end under "References" section. Clearly indicating whether each source is from Knowledge Graph (KG) or Document Chunks (DC), and include the file path if available, in the following format: [KG/DC] file_path
 - If you don't know the answer, just say so.
 - Do not make anything up. Do not include information not provided by the Knowledge Base.
-- Additional user prompt: {user_prompt}
+- Addtional user prompt: {user_prompt}
 
 Response:"""
 

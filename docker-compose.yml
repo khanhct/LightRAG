@@ -1,12 +1,13 @@
+version: '3.8'
 services:
   lightrag:
     container_name: lightrag
-    image: ghcr.io/hkuds/lightrag:latest
+    # image: ghcr.io/hkuds/lightrag:latest
     build:
       context: .
       dockerfile: Dockerfile
-      tags:
-        - ghcr.io/hkuds/lightrag:latest
+        # tags:
+        # - ghcr.io/hkuds/lightrag:latest
     ports:
       - "${PORT:-9621}:9621"
     volumes:
@@ -19,3 +20,14 @@ services:
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
+  lightrag-redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+    - "6379:6379"
+    volumes:
+    - ./data/redis-data:/data
+    command: redis-server --save 20 1 --loglevel warning
+    restart: always
