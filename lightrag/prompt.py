@@ -36,6 +36,8 @@ PROMPTS["DEFAULT_ENTITY_TYPES"] = [
 "PricePoint", #Pricing category (budget, premium, etc.)
 "Competitor", #Referenced competing products
 "Accessory", #Related or complementary products
+"ReviewScore", #Review Score
+"ReviewCount", # Review Count
 ]
 
 PROMPTS["DEFAULT_USER_PROMPT"] = "n/a"
@@ -85,6 +87,8 @@ Relationship Types:
 - COMPETES_WITH: ProductID -> Competitor  
 - HAS_ACCESSORY: ProductID -> Accessory  
 - HAS_MEDIA: ProductID -> Media
+- HAS_REVIEW_SCORE: ProductID -> ReviewScore  
+- HAS_REVIEW_COUNT: ProductID -> ReviewCount
 
 3. Identify high-level key words that summarize the main concepts, themes, or topics of the entire text. These should capture the overarching ideas present in the document.
 Format the content-level key words as ("content_keywords"{tuple_delimiter}<high_level_keywords>)
@@ -183,6 +187,8 @@ Media:
         Image URL: /globalassets/product-assets/crinklz/d143-crinklz-briefs/2025/crinklz-original-back-product.jpg
         Alt Text: Crinklz Original Briefs, Brief, Rear
   - Videos: []
+ReviewScore: 4.1
+ReviewCount: 10000
 ```
 Output:
 ("entity"{tuple_delimiter}"NorthShore EternaDry Diaper Booster Pads (Diaper Doublers)"{tuple_delimiter}"ProductName"{tuple_delimiter}"The full product name describing a booster pad designed for use with diapers to increase absorbency."){record_delimiter}
@@ -207,6 +213,8 @@ Output:
 ("entity"{tuple_delimiter}"Urinary, Bowel, Urinary+Bowel"{tuple_delimiter}"IncontinenceType"{tuple_delimiter}"Types of incontinence the product is designed to address."){record_delimiter}
 ("entity"{tuple_delimiter}"Absorbency Sort Integer: 30 oz.; Fits Weight: 29 - 43 in.; Hip Size: 29 - 43 in.; Waist Size: 29 - 43 in.; Fits Waists: 29 to 36 in., 37 to 48 in.; Fits Hips: 29 to 36 in., 37 to 48 in.; Product Size: Medium, 29 - 43 in.; Model Number: 60500"{tuple_delimiter}"Specification"{tuple_delimiter}"Technical specifications including size range, weight, and absorbency."){record_delimiter}
 ("entity"{tuple_delimiter}"Premium"{tuple_delimiter}"PricePoint"{tuple_delimiter}"Indicates this product belongs to the premium pricing category."){record_delimiter}
+("entity"{tuple_delimiter}"4.1"{tuple_delimiter}"ReviewScore"{tuple_delimiter}"Average user review rating for the product is 4.1 out of 5."){record_delimiter}
+("entity"{tuple_delimiter}"1000"{tuple_delimiter}"ReviewCount"{tuple_delimiter}"Total number of reviews submitted for this product is 1000."){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"NorthShore EternaDry Diaper Booster Pads (Diaper Doublers)"{tuple_delimiter}"Product ID maps to the product name."{tuple_delimiter}"identity mapping"{tuple_delimiter}10){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"A Booster adds absorbency to a disposable undergarment..."{tuple_delimiter}"Product ID has a detailed product description."{tuple_delimiter}"describes product"{tuple_delimiter}9){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Y"{tuple_delimiter}"Product is recommended based on the recommend field."{tuple_delimiter}"recommendation status"{tuple_delimiter}7){record_delimiter}
@@ -228,6 +236,8 @@ Output:
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Urinary, Bowel, Urinary+Bowel"{tuple_delimiter}"Product addresses all common types of incontinence."{tuple_delimiter}"incontinence coverage"{tuple_delimiter}8){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Absorbency Sort Integer: 30 oz.; Fits Weight: 29 - 43 in.; ..."{tuple_delimiter}"Detailed technical specs for sizing, absorbency, and fit."{tuple_delimiter}"product specifications"{tuple_delimiter}9){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Premium"{tuple_delimiter}"Product is positioned as premium in the market."{tuple_delimiter}"price tier"{tuple_delimiter}7){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"4.1"{tuple_delimiter}"This product has an average review score of 4.1."{tuple_delimiter}"review score information"{tuple_delimiter}8){record_delimiter}
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"1000"{tuple_delimiter}"This product has been reviewed by 1000 users."{tuple_delimiter}"review count information"{tuple_delimiter}8){record_delimiter}q
 ("content_keywords"{tuple_delimiter}"incontinence care, booster pads, product specifications, premium absorbency, adult diapers, Crinklz brand"){completion_delimiter}
 #############################"""
 ]
