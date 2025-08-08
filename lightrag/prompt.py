@@ -237,7 +237,7 @@ Output:
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Absorbency Sort Integer: 30 oz.; Fits Weight: 29 - 43 in.; ..."{tuple_delimiter}"Detailed technical specs for sizing, absorbency, and fit."{tuple_delimiter}"product specifications"{tuple_delimiter}9){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"Premium"{tuple_delimiter}"Product is positioned as premium in the market."{tuple_delimiter}"price tier"{tuple_delimiter}7){record_delimiter}
 ("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"4.1"{tuple_delimiter}"This product has an average review score of 4.1."{tuple_delimiter}"review score information"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"1000"{tuple_delimiter}"This product has been reviewed by 1000 users."{tuple_delimiter}"review count information"{tuple_delimiter}8){record_delimiter}q
+("relationship"{tuple_delimiter}"D002-2727"{tuple_delimiter}"1000"{tuple_delimiter}"This product has been reviewed by 1000 users."{tuple_delimiter}"review count information"{tuple_delimiter}8){record_delimiter}
 ("content_keywords"{tuple_delimiter}"incontinence care, booster pads, product specifications, premium absorbency, adult diapers, Crinklz brand"){completion_delimiter}
 #############################"""
 ]
