@@ -2284,6 +2284,10 @@ async def _build_query_context(
     if not entities_context and not relations_context:
         return None
 
+    logger.info(entities_context)
+    logger.info(relations_context)
+    logger.info(text_units_context)
+
     entities_str = json.dumps(entities_context, ensure_ascii=False)
     relations_str = json.dumps(relations_context, ensure_ascii=False)
     text_units_str = json.dumps(text_units_context, ensure_ascii=False)
