@@ -2287,7 +2287,8 @@ async def _build_query_context(
     tmp_ids = []
     for tmp in text_units_context:
         content = tmp['content']
-        tmp_ids.extend([c["productId"] for c in content])
+        logger.info(f"1111111111111111 {content}")
+        # tmp_ids.extend([c["productId"] for c in content])
     ids = ",".join(i for i in tmp_ids)
     logger.info(f"1111111111111111: IDs : {ids}")
 
