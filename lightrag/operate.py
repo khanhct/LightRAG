@@ -1693,6 +1693,8 @@ async def kg_query(
         history=history_context,
         user_prompt=user_prompt,
     )
+    logger.info(f"1111111111111111 Query prompt: '{query}'")
+    logger.info(f"1111111111111111 Sys prompt: '{sys_prompt}'")
 
     if query_param.only_need_prompt:
         return sys_prompt
