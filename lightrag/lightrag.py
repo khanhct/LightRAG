@@ -1579,7 +1579,7 @@ class LightRAG:
             raise ValueError(f"Unknown mode {param.mode}")
         await self._query_done()
 
-        logger.debug(f"1111111111111111: Total: {time.perf_counter() - start_time}s")
+        logger.info(f"1111111111111111: Total: {time.perf_counter() - start_time}s")
         return response
 
     # TODO: Deprecated, use user_prompt in QueryParam instead
