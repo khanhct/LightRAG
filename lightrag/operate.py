@@ -2284,9 +2284,12 @@ async def _build_query_context(
     if not entities_context and not relations_context:
         return None
 
-    logger.info(entities_context)
-    logger.info(relations_context)
-    logger.info(text_units_context)
+    tmp_ids = []
+    for tmp in text_units_context:
+        content = tmp['content']
+        tmp_ids.append(c["productId"] for c in content)
+
+    logger.info(f"1111111111111111: IDs : {tmp_ids}")
 
     entities_str = json.dumps(entities_context, ensure_ascii=False)
     relations_str = json.dumps(relations_context, ensure_ascii=False)
