@@ -1607,6 +1607,7 @@ async def kg_query(
     system_prompt: str | None = None,
     chunks_vdb: BaseVectorStorage = None,
 ) -> str | AsyncIterator[str]:
+    start_time = time.perf_counter()
     if query_param.model_func:
         use_model_func = query_param.model_func
     else:
@@ -1622,10 +1623,13 @@ async def kg_query(
     if cached_response is not None:
         return cached_response
 
+    logger.info(f"1111111111111111: 1. Fetch cache: {time.perf_counter() - start_time}s")
+    start_time = time.perf_counter()
     hl_keywords, ll_keywords = await get_keywords_from_query(
         query, query_param, global_config, hashing_kv
     )
-
+    logger.info(f"1111111111111111: 2. Extract keywords: {time.perf_counter() - start_time}s")
+    start_time = time.perf_counter()
     logger.debug(f"High-level keywords: {hl_keywords}")
     logger.debug(f"Low-level  keywords: {ll_keywords}")
 
@@ -1661,6 +1665,8 @@ async def kg_query(
         query_param,
         chunks_vdb,
     )
+    logger.info(f"1111111111111111: 3. Build query: {time.perf_counter() - start_time}s")
+    start_time = time.perf_counter()
 
     if query_param.only_need_context:
         return context if context is not None else PROMPTS["fail_response"]
@@ -1702,6 +1708,7 @@ async def kg_query(
         system_prompt=sys_prompt,
         stream=query_param.stream,
     )
+
     if isinstance(response, str) and len(response) > len(sys_prompt):
         response = (
             response.replace(sys_prompt, "")
@@ -1712,7 +1719,7 @@ async def kg_query(
             .replace("</system>", "")
             .strip()
         )
-
+    logger.info(f"1111111111111111: 4. Finalize data: {time.perf_counter() - start_time}s")
     if hashing_kv.global_config.get("enable_llm_cache"):
         # Save to cache
         await save_to_cache(
@@ -1931,7 +1938,7 @@ async def _build_query_context(
     chunks_vdb: BaseVectorStorage = None,
 ):
     logger.info(f"Process {os.getpid()} building query context...")
-
+    start_time = time.perf_counter()
     # Collect all chunks from different sources
     all_chunks = []
     entities_context = []
@@ -2014,6 +2021,8 @@ async def _build_query_context(
             hl_relations_context, ll_relations_context
         )
 
+    logger.info(f"1111111111111111: 3.1 Get entities and relations context : {time.perf_counter() - start_time}s")
+    start_time = time.perf_counter()
     logger.info(
         f"Initial context: {len(entities_context)} entities, {len(relations_context)} relations, {len(all_chunks)} chunks"
     )
@@ -2087,7 +2096,8 @@ async def _build_query_context(
                 logger.debug(
                     f"Truncated relations: {original_relation_count} -> {len(relations_context)} (relation max tokens: {max_relation_tokens})"
                 )
-
+    logger.info(f"1111111111111111: 3.2 Tokenizer entities and relations context : {time.perf_counter() - start_time}s")
+    start_time = time.perf_counter()
     # After truncation, get text chunks based on final entities and relations
     logger.info("Getting text chunks based on truncated entities and relations...")
 
@@ -2176,6 +2186,9 @@ async def _build_query_context(
             entities_str=entities_str, relations_str=relations_str
         )
         kg_context_tokens = len(tokenizer.encode(kg_context))
+        logger.info(
+            f"1111111111111111: 3.3 Get text chunks based on final entities and relations : {time.perf_counter() - start_time}s")
+        start_time = time.perf_counter()
 
         # Calculate actual system prompt overhead dynamically
         # 1. Calculate conversation history tokens
@@ -2223,6 +2236,9 @@ async def _build_query_context(
         logger.debug(
             f"Token allocation - Total: {max_total_tokens}, History: {history_tokens}, SysPrompt: {sys_prompt_overhead}, KG: {kg_context_tokens}, Buffer: {buffer_tokens}, Available for chunks: {available_chunk_tokens}"
         )
+        logger.info(
+            f"1111111111111111: 3.4 Calculate actual system prompt overhead dynamically : {time.perf_counter() - start_time}s")
+        start_time = time.perf_counter()
 
         # Re-process chunks with dynamic token limit
         if all_chunks:
@@ -2255,6 +2271,8 @@ async def _build_query_context(
             logger.debug(
                 f"Re-truncated chunks for dynamic token limit: {len(temp_chunks)} -> {len(text_units_context)} (chunk available tokens: {available_chunk_tokens})"
             )
+            logger.info(
+                f"1111111111111111: 3.5 Re-process chunks with dynamic token limit : {time.perf_counter() - start_time}s")
 
     logger.info(
         f"Final context: {len(entities_context)} entities, {len(relations_context)} relations, {len(text_units_context)} chunks"
