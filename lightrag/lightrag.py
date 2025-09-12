@@ -1535,6 +1535,7 @@ class LightRAG:
             str: The result of the query execution.
         """
         # If a custom model is provided in param, temporarily update global config
+        start_time = time.perf_counter()
         global_config = asdict(self)
         # Save original query for vector search
         param.original_query = query
@@ -1577,6 +1578,8 @@ class LightRAG:
         else:
             raise ValueError(f"Unknown mode {param.mode}")
         await self._query_done()
+
+        logger.debug(f"1111111111111111: Total: {time.perf_counter() - start_time}s")
         return response
 
     # TODO: Deprecated, use user_prompt in QueryParam instead
